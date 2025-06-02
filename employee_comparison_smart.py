@@ -71,6 +71,10 @@ if old_file and new_file:
                 changed_names.update(diff_rows["اسم الموظف"].unique())
 
     new_only = merged[merged["_merge"] == "right_only"]
+    old_only = merged[merged["_merge"] == "left_only"]
+    new_employees_count = new_only[id_column].nunique()
+
+
     tab1, tab2, tab3, tab4 = st.tabs(["الاختلافات", "الموظفين الجدد", "رسم بياني", "فلترة"])
 
     with tab1:
@@ -86,15 +90,16 @@ if old_file and new_file:
             st.success(" لا توجد اختلافات في البيانات.")
 
     with tab2:
-        st.subheader(":الموظفون الجدد")
+        st.subheader(":الموظفون المفقودون في البيانات القديمة")
         if not new_only.empty:
-            new_employees = new_df[new_df["normalized_name"].isin(new_only["normalized_name"])]
-            st.dataframe(new_employees, use_container_width=True)
+            missing_rows = old_df[old_df[id_column].isin(old_only[id_column])]
+            st.dataframe(missing_rows, use_container_width=True)
 
-            new_csv = new_employees.to_csv(index=False).encode("utf-8-sig")
-            st.download_button(" تحميل ملف للموظفين الجدد", data=new_csv, file_name="الموظفين_الجدد.csv", mime="text/csv")
+            missing_csv = missing_rows.to_csv(index=False).encode("utf-8-sig")
+            st.download_button(" تحميل ملف للموظفين المفقودين", data=missing_csv, file_name="الموظفين_المفقودين.csv", mime="text/csv")
         else:
-            st.info("لا توجد سجلات جديدة.")
+            st.info("لا توجد سجلات مفقودة.")
+
 
     with tab3:
         if differences:
