@@ -46,8 +46,7 @@ if old_file and new_file:
         col for col in shared_cols
         if col != name_col and
            col != "normalized_name" and
-           "تاريخ التعيين" not in col and
-           "الرقم الوظيفي" not in col
+           "تاريخ التعيين" not in col
     ]
 
 
