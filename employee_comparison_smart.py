@@ -41,7 +41,15 @@ if old_file and new_file:
     new_df["normalized_name"] = new_df[name_col].apply(normalize_name)
 
     shared_cols = list(set(old_df.columns).intersection(set(new_df.columns)))
-    shared_cols = [col for col in shared_cols if col != name_col and col != "normalized_name" and 'تاريخ التعيين' not in col]
+
+    shared_cols = [
+        col for col in shared_cols
+        if col != name_col and
+           col != "normalized_name" and
+           "تاريخ التعيين" not in col and
+           "الرقم الوظيفي" not in col
+    ]
+
 
     # دمج البيانات بناءً على الاسم المنظّف
     merged = pd.merge(old_df, new_df, on="normalized_name", suffixes=('_old', '_new'), how='outer', indicator=True)
@@ -74,7 +82,7 @@ if old_file and new_file:
     old_only = merged[merged["_merge"] == "left_only"]
 
 
-    tab1, tab2, tab3, tab4 = st.tabs(["الاختلافات", "الموظفين الجدد", "رسم بياني", "فلترة"])
+    tab1, tab2, tab3, tab4 = st.tabs(["الاختلافات", "الموظفين المفقودون", "رسم بياني", "فلترة"])
 
     with tab1:
         if differences:
