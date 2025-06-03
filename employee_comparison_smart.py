@@ -72,7 +72,7 @@ if old_file and new_file:
 
     new_only = merged[merged["_merge"] == "right_only"]
     old_only = merged[merged["_merge"] == "left_only"]
-    new_employees_count = new_only[id_column].nunique()
+    new_employees_count = new_only[name_col].nunique()
 
 
     tab1, tab2, tab3, tab4 = st.tabs(["الاختلافات", "الموظفين الجدد", "رسم بياني", "فلترة"])
