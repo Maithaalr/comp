@@ -91,7 +91,7 @@ if old_file and new_file:
     with tab2:
         st.subheader(":الموظفون المفقودون في البيانات القديمة")
         if not new_only.empty:
-            missing_rows = old_df[old_df[id_column].isin(old_only[id_column])]
+            missing_rows = old_df[old_df[name_col].isin(old_only[name_col])]
             st.dataframe(missing_rows, use_container_width=True)
 
             missing_csv = missing_rows.to_csv(index=False).encode("utf-8-sig")
